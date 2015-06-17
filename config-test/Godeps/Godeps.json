@@ -1,0 +1,11 @@
+{
+	"ImportPath": "github.com/guidowb/cf-config-mgmt/config-test",
+	"GoVersion": "go1.4.2",
+	"Deps": [
+		{
+			"ImportPath": "code.google.com/p/gorest",
+			"Comment": "v0.2-1",
+			"Rev": "7256ac017e82ce21649dd36a89053e74d530981b"
+		}
+	]
+}

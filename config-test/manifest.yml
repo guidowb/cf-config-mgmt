@@ -1,0 +1,6 @@
+---
+applications:
+- name: config-test
+  memory: 512M
+  host: config-test
+  command: config-test

@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-python ../config-client/get-config.py | while read key value
+while read key value
 do
 	export "$key"="$value"
-done
+done < <( python app/config-client/get-config.py )

@@ -54,7 +54,12 @@ def get_spring_cloud_config(service, appinfo):
 		return
 	url += "/" + appinfo['name']
 	url += "/" + appinfo['profile']
-	config = json.load(urllib2.urlopen(url))
+	try:
+		config = json.load(urllib2.urlopen(url))
+	except urllib2.URLError as err:
+		print >> sys.stderr, "can't connect to", url
+		print >> sys.stderr, err
+		return
 	json.dump(config, sys.stderr, indent=4)
 	print >> sys.stderr
 	#

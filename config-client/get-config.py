@@ -3,13 +3,6 @@ import sys
 import json
 import urllib2
 
-# Because we are running in the context of a container,
-# the only way to report back status is to pass it on to
-# the application. So we capture all meta-data about our
-# attempt to initialize config in a special environment
-# variable
-config_info = {}
-
 def main():
 	appinfo = get_application_info()
 	examine_vcap_services(appinfo)
@@ -17,9 +10,10 @@ def main():
 # Get Application Info
 #
 # Certain information about the application is used in
-# the query to the configuration services, to allow them
+# the query to the configuration servers, to allow them
 # to return config values dependent on the application
 # instance deployment
+#
 def get_application_info():
 	appinfo = {}
 	vcap_application = json.loads(os.getenv('VCAP_APPLICATION', '{}'))
@@ -52,7 +46,8 @@ def examine_vcap_services(appinfo):
 
 def get_spring_cloud_config(service, appinfo):
 	print >> sys.stderr, "spring-cloud-config:"
-	print >> sys.stderr, service
+	json.dump(service, sys.stderr, indent=4)
+	print >> sys.stderr
 	url = service.get('credentials',{}).get('url')
 	if url == None:
 		print >> sys.stderr, "services of type spring-config-server must specify a url"
@@ -60,18 +55,27 @@ def get_spring_cloud_config(service, appinfo):
 	url += "/" + appinfo['name']
 	url += "/" + appinfo['profile']
 	config = json.load(urllib2.urlopen(url))
-	print config
+	json.dump(config, sys.stderr, indent=4)
+	print >> sys.stderr
+	#
+	# We iterate through the list in reversed order, as it looks like the
+	# Spring Cloud Config Server always returns the most specific context
+	# first. So this order leads to the correct merge result if the same
+	# property appears in multiple contexts.
+	#
+	for sources in reversed(config.get('propertySources', [])):
+		for key, value in sources.get('source', {}).items():
+			print key.replace('.', '_'), value
 
 def get_archaius_config(service, appinfo):
 	print >> sys.stderr, "archaius-config:"
-	print >> sys.stderr, service
+	json.dump(service, sys.stderr, indent=4)
+	print >> sys.stderr
 
 def get_zuul_config(service, appinfo):
 	print >> sys.stderr, "zuul-config:"
-	print >> sys.stderr, service
-
-def print_error(err):
-	sys.stderr.write(err + '\n')
+	json.dump(service, sys.stderr, indent=4)
+	print >> sys.stderr
 
 if __name__ == '__main__':
 	main()

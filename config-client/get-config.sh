@@ -1,3 +1,6 @@
 #!/bin/sh
 
-config=`../config-client/get-config.py`
+python ../config-client/get-config.py | while read key value
+do
+	export "$key"="$value"
+done

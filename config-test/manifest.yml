@@ -4,3 +4,8 @@ applications:
   memory: 512M
   host: config-test
   command: config-test
+  buildpack: custom_go_buildpack
+  services:
+  - spring-config-server
+  - archaius-config-server
+  - zuul-config-server

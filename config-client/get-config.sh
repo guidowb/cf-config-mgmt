@@ -3,4 +3,4 @@
 while read key value
 do
 	export "$key"="$value"
-done < <( python app/config-client/get-config.py )
+done <<< "`python app/config-client/get-config.py`"

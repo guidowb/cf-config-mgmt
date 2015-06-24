@@ -4,4 +4,4 @@ applications:
   memory: 512M
   host: pyconfig
   command: python config.py
-  buildpack: https://github.com/joshuamckenty/buildpack-python.git
+  buildpack: https://github.com/guidowb/buildpack-python.git

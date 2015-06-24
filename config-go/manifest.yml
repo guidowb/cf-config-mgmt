@@ -4,4 +4,4 @@ applications:
   memory: 512M
   host: goconfig
   command: config-go
-# buildpack: https://github.com/guidowb/go-buildpack.git
+  buildpack: https://github.com/guidowb/go-buildpack.git

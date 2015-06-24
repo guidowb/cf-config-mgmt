@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"sort"
 	"net/http"
 	"encoding/json"
 
@@ -20,6 +21,8 @@ type ConfigService struct {
 }
 
 func (svc ConfigService) Environment() string {
-	result,_ := json.MarshalIndent(os.Environ(), "", "  ")
+	properties := os.Environ()
+	sort.Strings(properties)
+	result,_ := json.MarshalIndent(properties, "", "  ")
 	return string(result)
 }

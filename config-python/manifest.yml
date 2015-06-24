@@ -1,0 +1,7 @@
+---
+applications:
+- name: pyconfig
+  memory: 512M
+  host: pyconfig
+  command: python config.py
+  buildpack: https://github.com/joshuamckenty/buildpack-python.git

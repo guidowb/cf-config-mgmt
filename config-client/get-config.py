@@ -55,9 +55,9 @@ def get_spring_cloud_config(service, appinfo):
 	url += "/" + appinfo['name']
 	url += "/" + appinfo['profile']
 	try:
+		print >> sys.stderr, "GET", url
 		config = json.load(urllib2.urlopen(url))
 	except urllib2.URLError as err:
-		print >> sys.stderr, "can't connect to", url
 		print >> sys.stderr, err
 		return
 	json.dump(config, sys.stderr, indent=4)
@@ -81,6 +81,24 @@ def get_zuul_config(service, appinfo):
 	print >> sys.stderr, "zuul-config:"
 	json.dump(service, sys.stderr, indent=4)
 	print >> sys.stderr
+	url = service.get('credentials',{}).get('url')
+	if url == None:
+		print >> sys.stderr, "services of type zuul-config-server must specify a url"
+		return
+	url += "/settings"
+	url += "/" + appinfo['profile']
+	url += "/" + appinfo['name']
+	url += ".json"
+	try:
+		print >> sys.stderr, "GET", url
+		config = json.load(urllib2.urlopen(url))
+	except urllib2.URLError as err:
+		print >> sys.stderr, err
+		return
+	json.dump(config, sys.stderr, indent=4)
+	print >> sys.stderr
+	for key, value in config.items():
+		print key.replace('.', '_'), value
 
 if __name__ == '__main__':
 	main()

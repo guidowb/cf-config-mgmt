@@ -3,5 +3,5 @@ applications:
 - name: goconfig
   memory: 512M
   host: goconfig
-  command: goconfig
-  buildpack: custom_go_buildpack
+  command: config-go
+# buildpack: https://github.com/guidowb/go-buildpack.git

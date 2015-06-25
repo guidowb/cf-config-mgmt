@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: javaconfig 
+  cloud:
+    config:
+      uri: http://spring-cloud-config-server.cfapps.io

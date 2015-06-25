@@ -1,0 +1,6 @@
+---
+applications:
+- name: javaconfig
+  path: build/libs/javaconfig-0.1.0.jar
+  memory: 512M
+  host: javaconfig

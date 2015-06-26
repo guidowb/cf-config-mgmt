@@ -68,7 +68,7 @@ def get_spring_cloud_config(service, appinfo):
 	#
 	for sources in reversed(config.get('propertySources', [])):
 		for key, value in sources.get('source', {}).items():
-			print key.replace('.', '_'), value
+			write_config_property(service, key, value)
 
 def get_zuul_config(service, appinfo):
 	print >> sys.stderr, "zuul-config:"
@@ -91,7 +91,36 @@ def get_zuul_config(service, appinfo):
 	json.dump(config, sys.stderr, indent=4)
 	print >> sys.stderr
 	for key, value in config.items():
-		print key.replace('.', '_'), value
+		write_config_property(service, key, value)
+
+# Write Configuration
+#
+# Regardless of the source, configuration properties can be added to a
+# number of destinations. Which property goes where will ultimately be
+# determined by rules that can be configured for each application.
+#
+def write_config_property(service, key, value):
+	#
+	# Ultimately, we want to allow configurable rules to drive the
+	# destinations of our properties. For now, we simply put them
+	# everywhere.
+	#
+	add_environment_variable(key, value)
+	add_to_property_file("config-server.properties", key, value)
+
+def add_environment_variable(key, value):
+	#
+	# There's no point sticking the key into our own environment since
+	# we are a child of the process we want to affect. So instead, for
+	# environment variables, we depend on our caller to set and export
+	# the real environment variables. We simply place them on our
+	# stdout for the caller to consume.
+	#
+	print key.replace('.', '_'), value
+
+def add_to_property_file(file, key, value):
+	with open(file, "a") as propertyfile:
+		print >> propertyfile, key+':', value
 
 if __name__ == '__main__':
 	main()

@@ -39,8 +39,6 @@ def examine_vcap_services(appinfo):
 			tags = instance.get('tags', []) + instance.get('credentials',{}).get('tags',[])
 			if 'spring-config-server' in tags:
 				get_spring_cloud_config(instance, appinfo)
-			if 'archaius-config-server' in tags:
-				get_archaius_config(instance, appinfo)
 			if 'zuul-config-server' in tags:
 				get_zuul_config(instance, appinfo)
 
@@ -71,11 +69,6 @@ def get_spring_cloud_config(service, appinfo):
 	for sources in reversed(config.get('propertySources', [])):
 		for key, value in sources.get('source', {}).items():
 			print key.replace('.', '_'), value
-
-def get_archaius_config(service, appinfo):
-	print >> sys.stderr, "archaius-config:"
-	json.dump(service, sys.stderr, indent=4)
-	print >> sys.stderr
 
 def get_zuul_config(service, appinfo):
 	print >> sys.stderr, "zuul-config:"

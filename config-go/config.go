@@ -4,7 +4,6 @@ import (
 	"os"
 	"sort"
 	"net/http"
-	"encoding/json"
 
 	"code.google.com/p/gorest"
 )
@@ -17,12 +16,11 @@ func main() {
 
 type ConfigService struct {
 	gorest.RestService
-	environment gorest.EndPoint `method:"GET" path:"/env" output:"string"`
+	environment gorest.EndPoint `method:"GET" path:"/env" output:"[]string"`
 }
 
-func (svc ConfigService) Environment() string {
+func (svc ConfigService) Environment() []string {
 	properties := os.Environ()
 	sort.Strings(properties)
-	result,_ := json.MarshalIndent(properties, "", "  ")
-	return string(result)
+	return properties
 }

@@ -6,7 +6,7 @@ This project demonstrates centralization of management of application settings a
 
 The demo shows this for two languages (Golang and Python), and two configuration server types (Spring Cloud Config and Zuul), but the approach is easily extensible to other languages and server types.
 
-What a [video demonstration](http://youtu.be/4NmYHIxhBU4).
+Watch a [video demonstration](http://youtu.be/4NmYHIxhBU4).
 
 ## Forked Buildpacks
 
